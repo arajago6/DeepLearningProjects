@@ -66,4 +66,13 @@ classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'si
 # Compile the ANN
 classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
 
+# Fit the ANN to the training set
+classifier.fit(X_train, y_train, batch_size = 10, nb_epoch = 100) 
+
 # Part 3 - Make predcitions and evaluate the model
+
+# Predicting test set results
+y_pred = classifier.predict(X_test)
+y_pred = (y_pred > 0.5)
+
+# Making the confusion matrix
