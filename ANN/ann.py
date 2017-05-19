@@ -21,3 +21,15 @@ import pandas as pd
 dataset = pd.read_csv("Churn_Modelling.csv")
 X = dataset.iloc[:,3:13].values
 y = dataset.iloc[:,13].values
+
+# Encoding the categorical data
+from sklearn.preprocessing import LabelEncoder, OneHotEncoder
+labelencoder_X_ctry = LabelEncoder()
+X[:,1] = labelencoder_X_ctry.fit_transform(X[:,1])
+labelencoder_X_sex = LabelEncoder()
+X[:,2] = labelencoder_X_sex.fit_transform(X[:,2])
+# Use one hot encoding to avoid ordinality in country
+onehotencoder = OneHotEncoder(categorical_features = [1])
+X = onehotencoder.fit_transform(X).toarray()
+# Remove first column to avoid dummy variable trap
+X = X[:,1:]
