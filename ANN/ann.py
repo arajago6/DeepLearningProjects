@@ -43,3 +43,27 @@ from sklearn.preprocessing import StandardScaler
 sc = StandardScaler()
 X_train = sc.fit_transform(X_train)
 X_test = sc.transform(X_test)
+
+# Part 2 - Make the ANN
+
+# Import Keras libraries and packages
+import keras
+from keras.models import Sequential
+from keras.layers import Dense
+
+# Initializing the ANN
+classifier = Sequential()
+
+# Adding input layer and first hidden layer
+classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+
+# Adding the second hidden layer
+classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+
+# Adding the output layer
+classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+
+# Compile the ANN
+classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+
+# Part 3 - Make predcitions and evaluate the model
