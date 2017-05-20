@@ -52,15 +52,18 @@ X_test = sc.transform(X_test)
 import keras
 from keras.models import Sequential
 from keras.layers import Dense
+from keras.layers import Dropout
 
 # Initializing the ANN
 classifier = Sequential()
 
 # Adding input layer and first hidden layer
 classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+classifier.add(Dropout(p = 0.1))
 
 # Adding the second hidden layer
 classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+classifier.add(Dropout(p = 0.1))
 
 # Adding the output layer
 classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
@@ -118,14 +121,16 @@ def build_classifier():
     # Make and compile the ANN as before
     classifier = Sequential()
     classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+    classifier.add(Dropout(p = 0.1))
     classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dropout(p = 0.1))
     classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
     classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
     return classifier
 
 classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, nb_epoch = 100)
-accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10)
-print ("Mean Accuracy : %.3f, Variance in Accuracy : %.3f" % (accuracies.mean(),accuracies.std())
+accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10)  # n_jobs doesn't work. Need to check why.
+print ("Mean Accuracy : %.3f, Variance in Accuracy : %.3f" % (accuracies.mean(),accuracies.std()))
 
 # Improving the ANN
 
