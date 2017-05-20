@@ -4,9 +4,11 @@
 Created on Thu May 18 21:37:04 2017
 
 @author: rasuishere
-"""
 
-# Artificial Neural Network
+Build an Artificial Neural Network to predict if a customer would leave the bank given 
+information about customers
+
+"""
 
 # Install TensorFlow and Keras before proceeding
 
@@ -76,3 +78,17 @@ y_pred = classifier.predict(X_test)
 y_pred = (y_pred > 0.5)
 
 # Making the confusion matrix
+from sklearn.metrics import confusion_matrix
+cm = confusion_matrix(y_test, y_pred)
+
+# Calculate metrics
+true_pos = cm[0][0]
+false_neg = cm[0][1]
+false_pos = cm[1][0]
+true_neg = cm[1][1]
+accuracy = (true_pos + true_neg) / (true_pos + true_neg + false_pos + false_neg)
+precision = true_pos / (true_pos + false_pos)
+recall = true_pos / (true_pos + false_neg)
+F1 = (2*precision*recall) / (precision + recall)
+print ("Accuracy : %.3f, F1 score : %.3f" % (accuracy,F1))
+
