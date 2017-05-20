@@ -3,7 +3,7 @@
 """
 Created on Thu May 18 21:37:04 2017 using Spyder
 
-@author: rasuishere
+@author: arajago6
 
 Build an Artificial Neural Network to predict if a customer would leave the bank given 
 information about customers
@@ -129,9 +129,33 @@ def build_classifier():
     return classifier
 
 classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, nb_epoch = 100)
-accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10)  # n_jobs doesn't work. Need to check why.
+accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10)  # n_jobs doesn't work. Need to check why
 print ("Mean Accuracy : %.3f, Variance in Accuracy : %.3f" % (accuracies.mean(),accuracies.std()))
 
 # Improving the ANN
+# Added dropout regularization in the code above to reduce overfitting.
 
 # Tuning the ANN
+from sklearn.model_selection import GridSearchCV
+
+def build_classifier_gs(units, p, optimizer):
+    # Make and compile the ANN as before
+    classifier = Sequential()
+    classifier.add(Dense(units = units, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+    classifier.add(Dropout(p = p))
+    classifier.add(Dense(units = units, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dropout(p = p))
+    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+    classifier.compile(optimizer = optimizer, loss = 'binary_crossentropy', metrics = ['accuracy'])
+    return classifier
+
+classifier = KerasClassifier(build_fn = build_classifier_gs)
+parameters = {'batch_size': [25, 32], 
+              'nb_epoch': [100, 500],
+              'units': [6,8],
+              'p':[0.1,0.2],
+              'optimizer': ['adam', 'rmsprop']}
+grid_search = GridSearchCV(estimator = classifier, param_grid = parameters, scoring = 'accuracy', cv = 10)
+grid_search = grid_search.fit(X_train, y_train)
+best_parameters = grid_search.best_params_
+best_accuracy = grid_search.best_score_
