@@ -159,3 +159,6 @@ grid_search = GridSearchCV(estimator = classifier, param_grid = parameters, scor
 grid_search = grid_search.fit(X_train, y_train)
 best_parameters = grid_search.best_params_
 best_accuracy = grid_search.best_score_
+
+print ("Best accuracy is " + str(best_accuracy))
+print ("Best parameters are " + str(best_parameters))
