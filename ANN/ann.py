@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-Created on Thu May 18 21:37:04 2017
+Created on Thu May 18 21:37:04 2017 using Spyder
 
 @author: rasuishere
 
@@ -108,3 +108,25 @@ recall = true_pos / (true_pos + false_neg)
 F1 = (2*precision*recall) / (precision + recall)
 print ("Accuracy : %.3f, F1 score : %.3f" % (accuracy,F1))
 
+# Part 4 - Evaluating, improving and tuning ANN
+
+# Evaluating the ANN
+from keras.wrappers.scikit_learn import KerasClassifier
+from sklearn.model_selection import cross_val_score
+
+def build_classifier():
+    # Make and compile the ANN as before
+    classifier = Sequential()
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu', input_dim = 11))
+    classifier.add(Dense(units = 6, kernel_initializer = 'uniform', activation = 'relu'))
+    classifier.add(Dense(units = 1, kernel_initializer = 'uniform', activation = 'sigmoid'))
+    classifier.compile(optimizer = 'adam', loss = 'binary_crossentropy', metrics = ['accuracy'])
+    return classifier
+
+classifier = KerasClassifier(build_fn = build_classifier, batch_size = 10, nb_epoch = 100)
+accuracies = cross_val_score(estimator = classifier, X = X_train, y = y_train, cv = 10)
+print ("Mean Accuracy : %.3f, Variance in Accuracy : %.3f" % (accuracies.mean(),accuracies.std())
+
+# Improving the ANN
+
+# Tuning the ANN
