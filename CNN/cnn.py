@@ -30,6 +30,12 @@ classifier.add(Convolution2D(32, (3,3), input_shape = (64,64,3), activation = 'r
 # Step 2 - 2X2 Max Pooling. Strides is same as pool_size. 
 classifier.add(MaxPooling2D(pool_size = (2,2), strides = (2,2)))
 
+# Adding more convolutional layers to generalize better and get higher test accuracy
+classifier.add(Convolution2D(32, (3,3), activation = 'relu'))
+classifier.add(MaxPooling2D(pool_size = (2,2), strides = (2,2)))
+classifier.add(Convolution2D(64, (3,3), activation = 'relu'))
+classifier.add(MaxPooling2D(pool_size = (2,2), strides = (2,2)))
+
 # Step 3 - Flattening
 classifier.add(Flatten())
 
@@ -70,6 +76,6 @@ test_set = test_datagen.flow_from_directory(
 classifier.fit_generator(
         training_set,
         samples_per_epoch=8000,
-        nb_epoch = 25,
+        nb_epoch = 100,
         validation_data = test_set,
         nb_val_samples=2000)
