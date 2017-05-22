@@ -18,3 +18,5 @@ import matplotlib.pyplot as plt
 import pandas as pd
 
 # Importing the dataset
+training_set = pd.read_csv('Google_Stock_Price_Train.csv')
+training_set = training_set.iloc[:,1:2].values
