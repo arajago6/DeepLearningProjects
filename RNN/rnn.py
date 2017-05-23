@@ -20,3 +20,16 @@ import pandas as pd
 # Importing the dataset
 training_set = pd.read_csv('Google_Stock_Price_Train.csv')
 training_set = training_set.iloc[:,1:2].values
+num_observations = training_set.shape[0]
+
+# Feature scaling
+from sklearn.preprocessing import MinMaxScaler
+sc = MinMaxScaler()
+training_set = sc.fit_transform(training_set)
+
+# Getting the inputs and the outputs
+X_train = training_set[0:num_observations-1]
+y_train = training_set[1:num_observations]
+
+# Reshape inputs to match expectation of keras recurrent layer
+X_train = np.reshape(X_train,(num_observations-1,1,1))
