@@ -68,3 +68,11 @@ inputs = np.reshape(inputs, (inputs.shape[0],1,1))
 predicted_stock_price = regressor.predict(inputs)
 predicted_stock_price = sc.inverse_transform(predicted_stock_price)
 
+# Visualizing the results
+plt.plot(real_stock_price, color = 'red', label = 'Real Google Stock Price')
+plt.plot(predicted_stock_price, color = 'blue', label = 'Predicted Google Stock Price')
+plt.title('Google Stock Price Prediction')
+plt.xlabel('Time')
+plt.ylabel('Open Stock Price')
+plt.legend()
+plt.show()
