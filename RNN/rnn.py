@@ -5,7 +5,7 @@ Created on Sun May 21 19:01:40 2017 using Sypder
 
 @author: arajago6
 
-Build a Recurrent Neural Network to predcit stock prices of Google for a month, 
+Build a Recurrent Neural Network to predict open stock prices of Google for a month, 
 having trained the RNN using 5 years of historic stock price data
 
 """
@@ -52,3 +52,19 @@ regressor.add(Dense(units = 1))
 
 # Compile the RNN
 regressor.compile(optimizer = 'rmsprop', loss = 'mean_squared_error')
+
+# Fitting the RNN to training set
+regressor.fit(X_train, y_train, batch_size = 32, epochs = 200)
+
+# Part 3 - Making predictions and visualizing results
+
+# Getting true Google open stock prices for the first month of 2017 
+test_set = pd.read_csv('Google_Stock_Price_Test.csv')
+real_stock_price = test_set.iloc[:,1:2].values
+
+# Getting predicted Google open stock prices for the first month of 2017  
+inputs = sc.transform(real_stock_price.copy())
+inputs = np.reshape(inputs, (inputs.shape[0],1,1))
+predicted_stock_price = regressor.predict(inputs)
+predicted_stock_price = sc.inverse_transform(predicted_stock_price)
+
